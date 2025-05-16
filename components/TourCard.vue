@@ -41,14 +41,19 @@
 </template>
 
 <script setup>
-const props = defineProps({
-	card: Object,
-})
-
-const isOrdered = ref(false)
+const props = defineProps({ card: Object })
 const showDescription = ref(false)
 
+const { addToCart, removeFromCart, isInCart } = useCart()
+
+const isOrdered = computed(() => isInCart(props.card.id))
+
 function toggleOrder() {
-	isOrdered.value = !isOrdered.value
+  if (isOrdered.value) {
+    removeFromCart(props.card.id)
+  } else {
+    addToCart(props.card)
+  }
 }
 </script>
+
